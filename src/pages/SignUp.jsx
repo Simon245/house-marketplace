@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 
 import visibilityIcon from '../assets/svg/visibilityIcon.svg';
 import visibilityIconOff from '../assets/svg/visibilityIconOff.svg';
+import OAuth from '../components/OAuth';
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -113,7 +114,7 @@ function SignUp() {
             </button>
           </div>
         </form>
-        {/*  Google OAuth */}
+        <OAuth />
         <Link to="/sign-in" className="registerLink">
           Sign in instead
         </Link>
