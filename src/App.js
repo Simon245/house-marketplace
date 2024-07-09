@@ -3,7 +3,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Explore from './pages/Explore';
-import ForgetPassword from './pages/ForgetPassword';
+import ForgotPassword from './pages/ForgotPassword';
 import Offers from './pages/Offers';
 import Profile from './pages/Profile';
 import SignIn from './pages/SignIn';
@@ -23,7 +23,7 @@ function App() {
           </Route>
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/forgot-password" element={<ForgetPassword />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
         </Routes>
         <Navbar />
       </Router>
