@@ -9,7 +9,7 @@ import shareIcon from '../assets/svg/shareIcon.svg';
 function Listing(props) {
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [shareLinkedCopied, setShareLinkedCopied] = useState(null);
+  const [shareLinkedCopied, setShareLinkedCopied] = useState(false);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -22,18 +22,81 @@ function Listing(props) {
 
       if (docSnap.exists()) {
         setListing(docSnap.data());
-        console.log(docSnap.data());
         setLoading(false);
       }
     };
     fetchListing();
   }, [navigate, params.listingId]);
 
+  const getShareLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setShareLinkedCopied(true);
+    setTimeout(() => {
+      setShareLinkedCopied(false);
+    }, 2000);
+  };
+
   if (loading) {
     return <Spinner />;
   }
 
-  return listing && <div>Listing {listing.name}</div>;
+  return (
+    <main>
+      {/*  Slider */}
+      <div className="shareIconDiv" onClick={getShareLink}>
+        <img src={shareIcon} alt="" />
+      </div>
+      {shareLinkedCopied && <p className="linkCopied">Link Copied!</p>}
+      <div className="listingDetails">
+        <p className="listingName">
+          {listing.name} - $
+          {listing.offer
+            ? listing.discountedPrice
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+            : listing.regularPrice
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+        </p>
+        <p className="listingLocation">{listing.location}</p>
+        <p className="listingType">
+          For {listing.type === 'rent' ? 'Rent' : 'Sale'}
+        </p>
+        {listing.offer && (
+          <p className="discountPrice">
+            ${listing.regularPrice - listing.discountedPrice} discount
+          </p>
+        )}
+
+        <ul className="listingDetailsList">
+          <li>
+            {listing.bedrooms > 1
+              ? `${listing.bedrooms} Bedrooms`
+              : '1 Bedroom'}
+          </li>
+          <li>
+            {listing.bathrooms > 1
+              ? `${listing.bathrooms} Bathrooms`
+              : '1 Bathroom'}
+          </li>
+          <li>{listing.parking && 'Parking Spot'}</li>
+          <li>{listing.furnished && 'Furnished'}</li>
+        </ul>
+
+        <p className="listingLocationTitle">Location</p>
+        {/*  Map */}
+
+        {auth.currentUser?.uid !== listing.userRef && (
+          <Link
+            to={`/contact/${listing.userRef}?listingName=${listing.name}`}
+            className="primaryButton"
+          >
+            Contact Landlord
+          </Link>
+        )}
+      </div>
+    </main>
+  );
 }
 
 export default Listing;
