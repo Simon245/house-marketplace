@@ -96,13 +96,17 @@ function Profile() {
     }));
   };
 
-  const onDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete?')) {
+  const onDelete = async (id, listingName) => {
+    if (window.confirm(`Are you sure you want to delete ${listingName}?`)) {
       await deleteDoc(doc(db, 'listings', id));
       const updateListings = listings.filter((listing) => listing.id !== id);
       setListings(updateListings);
       toast.success('Successfully deleted listing');
     }
+  };
+
+  const onEdit = (id) => {
+    navigate(`/edit-listing/${id}`);
   };
 
   return (
@@ -155,7 +159,8 @@ function Profile() {
                   key={listing.id}
                   listing={listing.data}
                   id={listing.id}
-                  onDelete={() => onDelete(listing.id)}
+                  onDelete={onDelete}
+                  onEdit={onEdit}
                 ></ListingItem>
               ))}
             </ul>
