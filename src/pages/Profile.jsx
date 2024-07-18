@@ -55,7 +55,6 @@ function Profile() {
 
         setListings(listings);
         setLoading(false);
-        console.log(listings);
       } catch (error) {
         toast.error('Error gettings user listings');
       }
